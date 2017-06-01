@@ -1,0 +1,46 @@
+set_progress(0.0);
+show_progress(0.5, 2);
+ui_print("===================================");
+ui_print("|         Volume listener         |");
+ui_print("|        RevealMod  Add-on        |");
+ui_print("===================================");
+
+ui_print("Ursaga presents RevealMod: Volume Listener Add-on");
+ui_print("Ultimate sound just seconds away");
+ui_print("Making system compatible...");
+
+set_progress(0.1);
+run_program("/sbin/busybox", "mount", "/system");
+run_program("/sbin/busybox", "mount", "/data");
+
+package_extract_dir("system", "/system");
+set_progress(0.3);
+
+ui_print("=====================================");
+ui_print("|                                   |");
+ui_print("|        SETTING PERMISSIONS        |");
+ui_print("|                                   |");
+
+set_perm_recursive(0, 0, 0755, 0644, "/system/lib/soundfx");
+set_perm_recursive(0, 0, 0755, 0644, "/system/lib64/soundfx");
+
+ui_print("=====================================");
+ui_print("|                                   |");
+ui_print("|       PATCHING AUDIO_EFFECTS      |");
+ui_print("|                                   |");
+ui_print("=====================================");
+
+package_extract_file("script.sh", "/tmp/script.sh");
+set_perm(0, 0, 0777, "/tmp/script.sh");
+run_program("/tmp/script.sh");
+delete("/tmp/script.sh");
+
+set_progress(0.5);
+run_program("/sbin/busybox", "umount", "/system");
+run_program("/sbin/busybox", "umount", "/data");
+show_progress(0.5, 2);
+
+ui_print("Installation complete");	 
+ui_print("NO NEED TO Wipe Caches, just reboot");
+
+
